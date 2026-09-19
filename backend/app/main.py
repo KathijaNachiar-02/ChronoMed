@@ -5,6 +5,10 @@ from app.routes.documents import router as documents_router
 from app.routes.patients import router as patients_router
 from app.routes.timeline import router as timeline_router
 from app.routes.events import router as events_router
+from app.routes.conflicts import router as conflicts_router
+from app.routes.changes import router as changes_router
+from app.routes.evidence import router as evidence_router
+from app.routes.query import router as query_router
 
 from app.services.database_service import (
     get_documents,
@@ -30,7 +34,10 @@ app.include_router(documents_router)
 app.include_router(patients_router)
 app.include_router(timeline_router)
 app.include_router(events_router)
-
+app.include_router(conflicts_router)
+app.include_router(changes_router)
+app.include_router(evidence_router)
+app.include_router(query_router)
 
 @app.get("/api/health")
 def health_check():

@@ -4,6 +4,7 @@ from pathlib import Path
 
 from app.services.document_service import extract_text_from_file
 from app.services.database_service import add_document, get_documents
+from app.services.ml_service import process_with_ml
 
 router = APIRouter(
     prefix="/api/documents",
@@ -40,6 +41,7 @@ async def upload_document(file: UploadFile = File(...)):
 def list_documents():
     return get_documents()
 
+
 @router.get("/{document_id}")
 def get_document(document_id: str):
     documents = get_documents()
@@ -56,6 +58,7 @@ def get_document(document_id: str):
 
     return document
 
+
 @router.post("/{document_id}/process")
 def process_uploaded_document(document_id: str):
     documents = get_documents()
@@ -71,16 +74,40 @@ def process_uploaded_document(document_id: str):
         }
 
     try:
+        # Extract text from the uploaded document
         text = extract_text_from_file(document["file_path"])
 
+        # Send the extracted text to the ML service
+        ml_result = process_with_ml(
+            document_id=document_id,
+            patient_id=document.get("patient_id"),
+            text=text
+        )
+
+        # If ML is unavailable or fails
+        if ml_result.get("status") == "failed":
+            document["status"] = "failed"
+
+            return {
+                "document_id": document_id,
+                "status": "failed",
+                "error": ml_result.get(
+                    "error",
+                    "ML processing failed"
+                )
+            }
+
+        # ML processing succeeded
         document["status"] = "processed"
         document["text_length"] = len(text)
+        document["ml_result"] = ml_result
 
         return {
             "document_id": document_id,
             "status": "processed",
             "text_length": len(text),
-            "message": "Document text extracted successfully"
+            "ml_result": ml_result,
+            "message": "Document processed successfully"
         }
 
     except Exception as error:
