@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Environment variables
 .env
 .env.*
@@ -33,3 +34,13 @@ Thumbs.db
 
 # VS Code
 .vscode/
+=======
+ChronoMed-ML/.venv/
+ChronoMed-ML/datasets/
+ChronoMed-ML/models/
+ChronoMed-ML/processed/
+
+__pycache__/
+*.pyc
+.env
+>>>>>>> e6c507a (Add ChronoMed ML scripts)
