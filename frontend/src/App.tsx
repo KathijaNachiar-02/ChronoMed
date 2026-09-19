@@ -25,31 +25,38 @@ type Page =
 function App() {
   const [page, setPage] = useState<Page>("Dashboard");
 
-  const goToDocuments = () => {
-    setPage("Documents");
-  };
   const renderPage = () => {
     switch (page) {
       case "Dashboard":
         return <Dashboard />;
+
       case "Patients":
         return <Patients />;
+
       case "Documents":
         return <Documents />;
+
       case "Timeline":
         return <Timeline />;
+
       case "Events":
         return <Events />;
+
       case "Conflicts":
         return <Conflicts />;
+
       case "What Changed":
         return <WhatChanged />;
+
       case "Evidence":
         return <Evidence />;
+
       case "Q&A":
         return <QA />;
+
       case "Settings":
         return <Settings />;
+
       default:
         return <Dashboard />;
     }
@@ -73,6 +80,7 @@ function App() {
       <aside className="sidebar">
         <div className="brand">
           <div className="brand-icon">✚</div>
+
           <div>
             <h1>ChronoMed</h1>
             <span>Medical Intelligence</span>
@@ -83,7 +91,9 @@ function App() {
           {menuItems.map((item) => (
             <button
               key={item}
-              className={page === item ? "nav-item active" : "nav-item"}
+              className={
+                page === item ? "nav-item active" : "nav-item"
+              }
               onClick={() => setPage(item)}
             >
               <span>
@@ -98,6 +108,7 @@ function App() {
                 {item === "Q&A" && "?"}
                 {item === "Settings" && "⚙"}
               </span>
+
               {item}
             </button>
           ))}
@@ -105,6 +116,7 @@ function App() {
 
         <div className="system-status">
           <div className="status-dot"></div>
+
           <div>
             <strong>System Online</strong>
             <small>AI services ready</small>
@@ -125,7 +137,9 @@ function App() {
           </div>
         </header>
 
-        <section className="page-content">{renderPage()}</section>
+        <section className="page-content">
+          {renderPage()}
+        </section>
       </main>
     </div>
   );
